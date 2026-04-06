@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>My Birthday App 🎂</title>
+<link rel="manifest" href="manifest.json">
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    background: linear-gradient(to right, #ff758c, #ff7eb3);
+    color: white;
+    text-align: center;
+    overflow: hidden;
+}
+
+/* Screens */
+.screen {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+/* Welcome Screen */
+#welcome {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Main Screen */
+#main {
+    display: none;
+    padding-top: 50px;
+}
+
+button {
+    padding: 15px 25px;
+    font-size: 18px;
+    border: none;
+    border-radius: 30px;
+    background: white;
+    color: #ff4d6d;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+/* Image */
+img {
+    width: 200px;
+    border-radius: 50%;
+    margin-top: 20px;
+}
+
+/* Floating Emojis */
+.emoji {
+    position: absolute;
+    font-size: 30px;
+    animation: float 5s linear infinite;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes float {
+    from { transform: translateY(100vh); }
+    to { transform: translateY(-10vh); }
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🎬 Welcome Screen -->
+<div id="welcome" class="screen">
+    <h1>🎉 Welcome 🎉</h1>
+    <p>Something special is waiting for you 💖</p>
+    <button onclick="startApp()">Enter 🎁</button>
+</div>
+
+<div id="main" class="screen">
+    <h1>🎂 Happy Birthday Martha 🎉</h1>
+    <p>This is my moment 😍✨</p>
+
+    <img src="20260308_142433.jpg">
+    <img src="20260327_110133.jpg">
+
+    <button onclick="openGift()">🎁 Open My Gift</button>
+
+    <div id="giftMessage" style="display:none; margin-top:20px;">
+        <h2>💖 Surprise 💖</h2>
+        <p>You are becoming everything you dreamed of 🔥</p>
+        <p>Nothing can stop you this year 😍✨</p>
+        <p id="countdown" style="margin-top:20px; font-size:20px;"></p>
+    </div>
+</div>
+
+<audio id="music" loop>
+    <source src="Wish_you_a_joyful_happy_birthday🎉🌻✨🌻✨💖💐💐(128k).mp3">
+</audio>
+
+<script>
+// Start App
+function startApp() {
+    document.getElementById("welcome").style.display = "none";
+    document.getElementById("main").style.display = "block";
+
+    document.getElementById("music").play();
+}
+
+function openGift() {
+    const gift = document.getElementById("giftMessage");
+
+    gift.style.display = "block";
+    gift.style.animation = "fadeIn 1s ease";
+
+    document.body.style.background = "black";
+document.body.style.color = "#ff4d6d";
+}
+
+// Set your birthday date here
+const birthday = new Date("April 26, 2026 00:00:00").getTime();
+
+function updateCountdown() {
+    const now = new Date().getTime();
+    const distance = birthday - now;
+
+    if (distance < 0) {
+        document.getElementById("countdown").innerHTML = "🎉 It's my birthday!!! 🎉";
+        return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((distance / (1000 * 60)) % 60);
+    const seconds = Math.floor((distance / 1000) % 60);
+
+    document.getElementById("countdown").innerHTML =
+        `⏳ ${days}d ${hours}h ${minutes}m ${seconds}s left`;
+}
+
+// update every second
+setInterval(updateCountdown, 1000);
+
+// Surprise
+function showSurprise() {
+    document.body.innerHTML = `
+        <h1>💖 It's My Birthday 💖</h1>
+        <p>I am powerful, beautiful, and unstoppable 🔥</p>
+        <p>This year belongs to me 😍✨</p>
+    `;
+}
+
+// Emojis
+function createEmoji() {
+    const emoji = document.createElement("div");
+    emoji.classList.add("emoji");
+
+    const emojis = ["🎈","🎉","💖","✨","🥳"];
+    emoji.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+
+    emoji.style.left = Math.random() * 100 + "vw";
+
+    document.body.appendChild(emoji);
+
+    setTimeout(() => {
+        emoji.remove();
+    }, 5000);
+}
+
+setInterval(createEmoji, 500);
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("service-worker.js");
+}
+</script>
+
+</body>
+</html>
+
+
+

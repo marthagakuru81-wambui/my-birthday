@@ -56,6 +56,27 @@ img {
     margin-top: 20px;
 }
 
+.gallery {
+    position: relative;
+    width: 80%;
+    margin: auto;
+    margin-top: 20px;
+}
+
+.gallery img {
+    width: 100%;
+    border-radius: 20px;
+    display: none;
+}
+
+.gallery img.active {
+    display: block;
+}
+
+.controls {
+    margin-top: 10px;
+}
+
 /* Floating Emojis */
 .emoji {
     position: absolute;
@@ -97,6 +118,17 @@ img {
     <img src="20260308_142433.jpg">
     <img src="20260327_110133.jpg">
 
+    <div class="gallery">
+    <img src="pic1.jpg" class="active">
+    <img src="pic2.jpg">
+    <img src="pic3.jpg">
+</div>
+
+<div class="controls">
+    <button onclick="prevImage()">⬅️</button>
+    <button onclick="nextImage()">➡️</button>
+</div>
+
     <button onclick="openGift()">🎁 Open My Gift</button>
 
     <div id="giftMessage" style="display:none; margin-top:20px;">
@@ -120,6 +152,39 @@ function startApp() {
     document.getElementById("music").play();
 }
 
+let current = 0;
+const images = document.querySelectorAll(".gallery img");
+
+function showImage(index) {
+    images.forEach(img => img.classList.remove("active"));
+    images[index].classList.add("active");
+}
+
+function nextImage() {
+    current = (current + 1) % images.length;
+    showImage(current);
+}
+
+function prevImage() {
+    current = (current - 1 + images.length) % images.length;
+    showImage(current);
+}
+
+let startX = 0;
+
+document.querySelector(".gallery").addEventListener("touchstart", e => {
+    startX = e.touches[0].clientX;
+});
+
+document.querySelector(".gallery").addEventListener("touchend", e => {
+    let endX = e.changedTouches[0].clientX;
+
+    if (startX > endX) {
+        nextImage();
+    } else {
+        prevImage();
+    }
+});
 function openGift() {
     const gift = document.getElementById("giftMessage");
 
